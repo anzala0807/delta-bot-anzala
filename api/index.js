@@ -17,7 +17,7 @@ bot.onText(/\/start/, (msg) => {
     bot.sendMessage(
         msg.chat.id,
         `hello ${msg.chat.first_name}, welcome...\n
-        click  /predict to know about i and v`
+        click  /predict to know about sudut`
     );   
 });
 
@@ -27,7 +27,7 @@ state = 0;
 bot.onText(/\/predict/, (msg) => { 
     bot.sendMessage(
         msg.chat.id,
-        `input nilai i|v example 4|3`
+        `input nilai x|y|z example 4|3|3`
     );   
     state = 1;
 });
@@ -43,21 +43,22 @@ bot.on('message', (msg) => {
                 parseFloat(s[1])
             ]
         ).then((jres)=>{
-            v = parseFloat(jres[0])
-            p = parseFloat(jres[1])
+            x = parseFloat(jres[0])
+            y = parseFloat(jres[1])
+            z = parseFloat(jres[2])
             
-            cls_model.classify([parseFloat(s[0]), parseFloat(s[1]), p, v]).then((jres2) =>{
+            cls_model.classify([parseFloat(s[0]), parseFloat(s[1]), parseFloat(s[2]), x, y, z]). =>{
                 bot.sendMessage(
                     msg.chat.id,
-                    `nilai v yang diprediksi adalah ${jres[0]} volt`
+                    `nilai x yang diprediksi adalah ${jres[0]} `
                 );   
                 bot.sendMessage(
                     msg.chat.id,
-                    `nilai p yang diprediksi adalah ${jres[1]} watt`
+                    `nilai y yang diprediksi adalah ${jres[1]} `
                 );
                 bot.sendMessage(
                     msg.chat.id,
-                    `klasifikasi tegangan ${jres2}`
+                    `nilai y yang diprediksi adalah ${jres[2]} `
                 );   
             }) 
         })
@@ -79,17 +80,17 @@ r.get('/prediction/:i/:r', function(req, res, next) {
 });
 
 // routers
-r.get('/classify/:i/:r', function(req, res, next) {
+r.get('/classify/:x/:y', function(req, res, next) {
       model.predict(
         [
-                parseFloat(req.params.i), //string nofloat
-                parseFloat(req.params.r),
+                parseFloat(req.params.x), //string nofloat
+                parseFloat(req.params.y),
         ]
        ).then((jres)=>{
            cls_model.classify(
                [
-                parseFloat(req.params.i), //string nofloat
-                parseFloat(req.params.r),
+                parseFloat(req.params.x), //string nofloat
+                parseFloat(req.params.y),
                 parseFloat(jres[0]),
                 parseFloat(jres[1])
                ]
